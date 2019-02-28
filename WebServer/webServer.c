@@ -46,9 +46,12 @@ void work(int fd, char *s)
     //analysis
     char fileName[100] = {0};
 
-    sscanf(s, "GET /%s", fileName);
-    if(strcmp(fileName, ""))
-        strcpy(fileName, "index.html");
+    sscanf(s, "GET /%s ", fileName);
+
+    printf("\nFileName:[%s]\n", s);
+
+    //if(strcmp(fileName, ""))
+    //    strcpy(fileName, "index.html");
     printf("the file name is %s \n", fileName);
 
     //mime 
@@ -74,6 +77,7 @@ void work(int fd, char *s)
             write(fd, response, rlen);
         else break;
     }
+    close(filefd);
     close(fd);
 }
 

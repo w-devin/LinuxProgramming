@@ -8,36 +8,35 @@
 int createListenfd()
 {
     int fd = socket(AF_INET, SOCK_STREAM, 0);
+    if(fd == -1)
+    {
+        perror("Can't allocate socketfd");
+        exit(-1);
+    }
 
     int n = 1;
     setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &n, 4);
 
+    //set socket fd
     struct sockaddr_in sin;
     bzero(&sin, sizeof(sin));
-
-    
     sin.sin_family = AF_INET;
     sin.sin_port = htons(80);
     sin.sin_addr.s_addr = INADDR_ANY;
 
-    int r = bind(fd, (struct sockaddr *)&sin, sizeof(sin));
-
-    if(r == -1)
+    //bind 
+    if(bind(fd, (struct sockaddr *)&sin, sizeof(sin)) == -1)
     {
-        perror("bind errer");
+        perror("Bind Error");
         exit(-1);
     }
-
-    //listen start
-    r = listen(fd, 10);
-    if(r == -1)
+    
+    //listen 
+    if(listen(fd, 10) == -1)
     {
         perror("listen errer");
         exit(-1);
     }
-
-    printf("return fd");
-
     return fd;
 }
 
